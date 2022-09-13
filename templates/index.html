@@ -3,8 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        td{
+            border: 1px solid black;
+            padding: 25px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello {{ prenom|upper }}, Nous somme le: {{ date|date:"d F Y H:i:s" }}</h1>
+
+    <h1>RECHERCHE OPERATIONNELLE</h1>
+    <form method="POST">
+        {%  csrf_token %}
+        <p>
+            <label for="dataY">Quantité disponible :</label>
+            <input required id="dataY" type="text" name="dataY">
+        </p>
+        <p>
+            <label for="dataX">Quantité demmandée :</label>
+            <input required id="dataX" type="text" name="dataX">
+        </p>
+
+        <p><button type="button" id="forms" > Generer </button></p>
+    </form>
+
+    {% if etat %}
+        <p>Coût unitaire du transport:</p>
+        <form action="resoudre" method="POST">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th></th>
+                    {% for y in tailleTabY %}
+                        <th> {{ y }} </th>
+                    {% endfor %}
+                </tr>
+               {% for x in tailleTabX %}
+                   {% with a=forloop.counter0 %}
+                   <tr>
+                       <th> {{ x }}</th>
+                       {% for y in tailleTabY %}
+                           <td>  <input name="{{ a }}{{ forloop.counter0 }}" type="text"></td>
+                        {% endfor %}
+                   </tr>
+                   {% endwith %}
+               {% endfor %}
+            </table>
+
+            <select name="" id="">
+                <option value="MiniLi">MiniLi</option>
+                <option value="BHammer">Balas Hammer</option>
+            </select>
+
+            <input type="submit" value="RESOUDRE">
+        </form>
+    {% endif %}
+    <div id="myDynamicTable"></div>
+
+<script>
+    var forms = document.getElementById('forms');
+
+forms.onclick = function addTable() {
+
+    const x = document.getElementById('dataX').value;
+    const y = document.getElementById('dataY').value;
+
+    const dataX = x.split(";");
+    const dataY = y.split(";");
+
+      var myTableDiv = document.getElementById("myDynamicTable");
+
+      if (myTableDiv.hasChildNodes()) {
+         myTableDiv.removeChild(myTableDiv.children[0]);
+      }
+
+      var table = document.createElement('TABLE');
+      var tableBody = document.createElement('TBODY');
+      table.appendChild(tableBody);
+      var th = document.createElement('TR');
+      var td = document.createElement('TH');
+      th.appendChild(td);
+
+      {#donneé quantite disponible#}
+      for (var i = 0; i < dataX.length; i++) {
+          var td = document.createElement('TH');
+          td.appendChild(document.createTextNode(dataX[i]));
+          th.appendChild(td);
+      }
+      tableBody.appendChild(th);
+
+        for (var i = 0; i < dataY.length; i++) {
+            {#donne quantité disponible#}
+            var tr = document.createElement('TR');
+            tableBody.appendChild(tr);
+            var th = document.createElement('TH');
+            th.appendChild(document.createTextNode(dataY[i]));
+            tr.appendChild(th);
+            for (var j = 0; j < dataX.length; j++) {
+                var td = document.createElement('TD');
+                var input = document.createElement('INPUT');
+                input.setAttribute('name', i.toString() + j.toString())
+                input.setAttribute('id', 'inputCout')
+                tr.appendChild(td);
+                td.appendChild(input);
+        }
+      }
+      myTableDiv.appendChild(table);
+}
+</script>
+
 </body>
 </html>
