@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A propos</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+    <div class="nav">
+        <div class="right">
+            <div class="logo"><a href="{% url 'index' %}"><img src="{% static "image/logo-head.svg" %}" alt=""></a></div>
+        </div>
+        <div class="left">
+            <div class="about">
+                <a href="#">
+                    <h4>A propos</h4>
+                </a>
+            </div>
+            <div class="line"></div>
+            <div class="team">
+                <ul>
+                    <li><p>FALY</p></li>
+                    <li><p>ZO NARINDRA</p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="text_content_about">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid atque deserunt labore rerum?
+                Accusantium aspernatur cum eos illum incidunt, libero maxime minus numquam officia, porro quod rem saepe
+                sit totam!</p>
+        </div>
+        <div class="logo_content">
+            <div class="logo_foot">
+                 <img src="{% static "image/LOGO-GM.svg" %}" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer_down">
+            <div class="text_prime">PROJET  RO  20200  <span>M1  IG</span></div>
+            <div class="text_second">designed  by  <span>ANTNF</span></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

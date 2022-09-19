@@ -1,4 +1,8 @@
+import json
+
 from django.shortcuts import render, redirect
+
+from projet.models import miniLi, balasHammer
 
 
 def about(request):
@@ -29,6 +33,29 @@ def index(request):
 
 
 def resoudre(request):
+    res = 0
     if request.method == 'POST':
-        pass
-    return redirect('index')
+        l = list()
+        dataX = request.POST.get('dataX')
+        dataY = request.POST.get('dataY')
+        requette = request.POST.get('selection');
+
+        dataX = list(map(int, dataX.split(";")))
+        dataY = list(map(int, dataY.split(";")))
+
+        for y in range(len(dataY)):
+            tmp = []
+            for x in range(len(dataX)):
+                tmp.append(int(request.POST.get(str(y)+str(x))))
+            l.append(tmp)
+
+        if requette == "miniLi":
+            resU, resC, resLink, zMin, z = miniLi(tuple(l), dataY, dataX)
+        if requette == "bHammer":
+            resU, resC, resLink, zMin, z = balasHammer(tuple(l), dataY, dataX)
+        print(resU)
+        print(resC)
+    return render(request, 'index.html', context={"z": z,
+                                                  "coutMin": zMin,
+                                                  "resLink": json.dumps(resLink),
+                                                  "resUC": json.dumps(resU + resC)})

@@ -10,11 +10,11 @@
     <div class="container">
         <div class="nav">
             <div class="right">
-                <div class="logo"><a href="{% url 'index' %}"><img src="{% static "image/logo-head.svg" %}" alt=""></a></div>
+                <div class="logo"><a href="#"><img src="{% static "image/logo-head.svg" %}" alt=""></a></div>
             </div>
             <div class="left">
                 <div class="about">
-                    <a href="{% url 'about' %}">
+                    <a href="page/about.html">
                         <h4>A propos</h4>
                     </a>
                 </div>
@@ -42,7 +42,7 @@
                         <input type="text" required name="dataY" id="dataY" placeholder="exemple : 15 ; 48 ; 98 ; 64">
                     </div>
                     <div class="quantity">
-                        <button type="button" id="forms" class="btn1"><span class="btn-text">GÉNÉRER</span></button>
+                        <button type="button" id="forms" class="btn" > Generer </button>
                     </div>
                     <div class="button_content" >
                         <div>
@@ -52,7 +52,7 @@
                             </select>
                         </div>
                         <div>
-                            <button value="resoudre" class="btn"><img src="{% static "image/resoudre.svg" %}" height="100%" width="90%"></button>
+                            <button value="resoudre" class="btn"><img src="{% static "image/resoudre.svg" %}" height="100%"></button>
                         </div>
                     </div>
                 </div>
@@ -85,26 +85,7 @@
 {#                        </tr>#}
 {#                    </table>#}
                 </div>
-                {% if z %}
-                    <div class="quantity">
-                        <label for="z">Z:</label>
-                        <input id="z" name="z" type="text" readonly value={{ z }}>
-                    </div>
-                {% endif %}
             </form>
-            {% if resLink %}
-                <div class="quantity" id="myDiagramDiv" style="width:700px; height:550px; background-color: #DAE4E4;">
-
-                </div>
-            {% endif %}
-
-             {% if coutMin %}
-                    <div class="quantity">
-                        <h4>Cout Minimal :</h4>
-                        <input type="text" readonly value={{ coutMin }}>
-                    </div>
-             {% endif %}
-
             <div class="logo_content">
                 <div class="logo_foot">
                     <img src="{% static "image/LOGO-GM.svg" %}" alt="">
@@ -113,13 +94,11 @@
         </div>
         <div class="footer">
             <div class="footer_down">
-                <div class="text_prime">PROJET  RO  2020  <span>M1  IG</span></div>
-                <div class="text_second">Designed  by  <span>ANTNF</span></div>
+                <div class="text_prime">PROJET  RO  20200  <span>M1  IG</span></div>
+                <div class="text_second">designed  by  <span>Valiavo</span></div>
             </div>
         </div>
     </div>
-
-<script src="{% static 'js/go.js' %}"></script>
 
 <script>
     var forms = document.getElementById('forms');
@@ -147,57 +126,35 @@ forms.onclick = function addTable() {
       var table = document.createElement('TABLE');
       var tableBody = document.createElement('TBODY');
       table.appendChild(tableBody);
-      var tr = document.createElement('TR');
-      var th = document.createElement('TH');
-      tr.appendChild(th);
+      var th = document.createElement('TR');
+      var td = document.createElement('TH');
+      th.appendChild(td);
 
       {#donneé quantite disponible#}
       for (var i = 0; i < dataX.length; i++) {
-          var thD = document.createElement('TH');
-          thD.appendChild(document.createTextNode("C" + (i + 1)));
-          tr.appendChild(thD);
+          var td = document.createElement('TH');
+          td.appendChild(document.createTextNode(dataX[i]));
+          th.appendChild(td);
       }
-      tableBody.appendChild(tr);
+      tableBody.appendChild(th);
 
         for (var i = 0; i < dataY.length; i++) {
             {#donne quantité disponible#}
             var tr = document.createElement('TR');
             tableBody.appendChild(tr);
             var th = document.createElement('TH');
-            th.appendChild(document.createTextNode("U" + (i + 1)));;
+            th.appendChild(document.createTextNode(dataY[i]));
             tr.appendChild(th);
             for (var j = 0; j < dataX.length; j++) {
                 var td = document.createElement('TD');
                 var input = document.createElement('INPUT');
-
                 input.setAttribute('name', i.toString() + j.toString());
                 input.setAttribute('id', 'inputCout');
                 input.setAttribute('required','');
-
                 tr.appendChild(td);
                 td.appendChild(input);
         }
-
-            tableBody.appendChild(tr);
-            var th = document.createElement('TH');
-            th.appendChild(document.createTextNode(dataY[i]));
-            tr.appendChild(th);
-
-
-
       }
-
-        var tr = document.createElement('TR');
-        var th = document.createElement('TH');
-        tr.appendChild(th);
-        for (var i = 0; i < dataX.length; i++) {
-          var thD = document.createElement('TH');
-          thD.appendChild(document.createTextNode(dataX[i]));
-          tr.appendChild(thD);
-      }
-      tableBody.appendChild(tr);
-
-
       {#var select = document.createElement('SELECT');#}
       {##}
       {#Creation selection#}
@@ -217,9 +174,6 @@ forms.onclick = function addTable() {
       {#var input = document.createElement('INPUT');#}
       {#input.setAttribute('type','submit');#}
       {#input.setAttribute('value','Resoudre');#}
-      var titre = document.createElement('H4');
-      titre.appendChild(document.createTextNode("Coût unitaire du transport : "));
-      myTableDiv.appendChild(titre);
 
       myTableDiv.appendChild(table);
       {#myTableDiv.appendChild(select);#}
@@ -228,36 +182,6 @@ forms.onclick = function addTable() {
 
 
 }
-</script>
-<script>
-  const $ = go.GraphObject.make;
-
-  const diagram =
-  $(go.Diagram, "myDiagramDiv",
-    { "undoManager.isEnabled": true });
-
-// the template we defined earlier
-diagram.nodeTemplate =
-  $(go.Node, "Auto",
-    new go.Binding("location", "loc", go.Point.parse),
-    $(go.Shape, "Circle", { fill: "lightgray" }),
-    $(go.TextBlock, { margin: 5 },
-      new go.Binding("text", "key"))
-  );
-
-diagram.linkTemplate =
-  $(go.Link,
-    { curve: go.Link.Bezier },
-    $(go.Shape),
-    $(go.Shape, { toArrow: "Standard", }),
-    $(go.TextBlock, {segmentOffset: new go.Point(0, -10) },
-          new go.Binding("text"))
-  );
-
-var nodeDataArray = {{ resUC| safe  }};
-
-var linkDataArray = {{ resLink| safe }};
-diagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 </script>
 </body>
 </html>
